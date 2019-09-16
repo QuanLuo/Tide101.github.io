@@ -6,24 +6,24 @@
     
 
     
-    <title>策略模式 | 权小爷的QQ空间</title>
+    <title>Unity中查找静态引用指定图片的预制体 | 权小爷的QQ空间</title>
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
         <meta name="keywords" content="设计模式,策略模式">
     
-    <meta name="description" content="1. 什么是策略模式？策略模式定义了算法族，将它们分别封装起来，让它们可以相互替换。这个模式使算法独立于它的使用者。 譬如我们我们需要实现一个计算器的功能，这个计算器有加减乘除四种计算方式，一般的做法就是创建一个计算器类，然后在这个类中添加加减乘除四个方法。代码如下： 1234567public class Calculator&amp;#123;    public int Add(int num1,">
+    <meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566using UnityEditor;using UnityEngine;using System.Collections.Generic;using Sy">
 <meta name="keywords" content="设计模式,策略模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="策略模式">
-<meta property="og:url" content="http://yoursite.com/2019/07/16/策略模式/index.html">
+<meta property="og:title" content="Unity中查找静态引用指定图片的预制体">
+<meta property="og:url" content="http://yoursite.com/2019/09/06/Unity中查找静态引用指定图片的预制体/index.html">
 <meta property="og:site_name" content="权小爷的QQ空间">
-<meta property="og:description" content="1. 什么是策略模式？策略模式定义了算法族，将它们分别封装起来，让它们可以相互替换。这个模式使算法独立于它的使用者。 譬如我们我们需要实现一个计算器的功能，这个计算器有加减乘除四种计算方式，一般的做法就是创建一个计算器类，然后在这个类中添加加减乘除四个方法。代码如下： 1234567public class Calculator&amp;#123;    public int Add(int num1,">
+<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566using UnityEditor;using UnityEngine;using System.Collections.Generic;using Sy">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-18T11:04:15.499Z">
+<meta property="og:updated_time" content="2019-09-06T12:40:21.130Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="策略模式">
-<meta name="twitter:description" content="1. 什么是策略模式？策略模式定义了算法族，将它们分别封装起来，让它们可以相互替换。这个模式使算法独立于它的使用者。 譬如我们我们需要实现一个计算器的功能，这个计算器有加减乘除四种计算方式，一般的做法就是创建一个计算器类，然后在这个类中添加加减乘除四个方法。代码如下： 1234567public class Calculator&amp;#123;    public int Add(int num1,">
+<meta name="twitter:title" content="Unity中查找静态引用指定图片的预制体">
+<meta name="twitter:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566using UnityEditor;using UnityEngine;using System.Collections.Generic;using Sy">
     
 
     
@@ -130,19 +130,19 @@
                         <div class="main-body-header">
     <h1 class="header">
     
-    <a class="page-title-link" href="/categories/设计模式/">设计模式</a>
+    <a class="page-title-link" href="/categories/效率工具/">效率工具</a>
     </h1>
 </div>
 
                         <div class="main-body-content">
-                            <article id="post-策略模式" class="article article-single article-type-post" itemscope itemprop="blogPost">
+                            <article id="post-Unity中查找静态引用指定图片的预制体" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
             <header class="article-header">
                 
     
         <h1 class="article-title" itemprop="name">
-        策略模式
+        Unity中查找静态引用指定图片的预制体
         </h1>
     
 
@@ -152,8 +152,8 @@
             <div class="article-meta">
                 
     <div class="article-date">
-        <a href="/2019/07/16/策略模式/" class="article-date">
-            <time datetime="2019-07-16T03:10:53.000Z" itemprop="datePublished">2019-07-16</time>
+        <a href="/2019/09/06/Unity中查找静态引用指定图片的预制体/" class="article-date">
+            <time datetime="2019-09-06T03:10:53.000Z" itemprop="datePublished">2019-09-06</time>
         </a>
     </div>
 
@@ -169,24 +169,8 @@
         
         
         <div class="article-entry" itemprop="articleBody">
-            <h3 id="1-什么是策略模式？"><a href="#1-什么是策略模式？" class="headerlink" title="1. 什么是策略模式？"></a>1. 什么是策略模式？</h3><p>策略模式定义了算法族，将它们分别封装起来，让它们可以相互替换。这个模式使算法独立于它的使用者。</p>
-<p>譬如我们我们需要实现一个计算器的功能，这个计算器有加减乘除四种计算方式，一般的做法就是创建一个计算器类，然后在这个类中添加加减乘除四个方法。代码如下：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Calculator</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Add</span>(<span class="params"><span class="keyword">int</span> num1, <span class="keyword">int</span> num2</span>)</span>&#123;<span class="keyword">return</span> num1+num2;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Sub</span>(<span class="params"><span class="keyword">int</span> num1, <span class="keyword">int</span> num2</span>)</span>&#123;<span class="keyword">return</span> num1-num2;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Mul</span>(<span class="params"><span class="keyword">int</span> num1, <span class="keyword">int</span> num2</span>)</span>&#123;<span class="keyword">return</span> num1*num2;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Div</span>(<span class="params"><span class="keyword">int</span> num1, <span class="keyword">int</span> num2</span>)</span>&#123;<span class="keyword">return</span> num1/num2;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> UnityEditor;</span><br><span class="line"><span class="keyword">using</span> UnityEngine;</span><br><span class="line"><span class="keyword">using</span> System.Collections.Generic;</span><br><span class="line"><span class="keyword">using</span> System.IO;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SearchRefrenceEditorWindow</span> : <span class="title">EditorWindow</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;summary&gt;</span></span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> 查找引用</span></span><br><span class="line">    <span class="comment"><span class="doctag">///</span> <span class="doctag">&lt;/summary&gt;</span></span></span><br><span class="line">    [<span class="meta">MenuItem(<span class="meta-string">"Assets/SearchRefrence"</span>)</span>]</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">SearchRefrence</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        SearchRefrenceEditorWindow window = (SearchRefrenceEditorWindow)EditorWindow.GetWindow(<span class="keyword">typeof</span>(SearchRefrenceEditorWindow), <span class="literal">false</span>, <span class="string">"Searching"</span>, <span class="literal">true</span>);</span><br><span class="line">        window.Show();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Object searchObject;</span><br><span class="line">    <span class="keyword">private</span> List&lt;Object&gt; result = <span class="keyword">new</span> List&lt;Object&gt;();</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">OnGUI</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function"></span>    &#123;</span><br><span class="line">        EditorGUILayout.BeginHorizontal();</span><br><span class="line">        searchObject = EditorGUILayout.ObjectField(searchObject, <span class="keyword">typeof</span>(Object), <span class="literal">true</span>, GUILayout.Width(<span class="number">200</span>));</span><br><span class="line">        <span class="keyword">if</span> (GUILayout.Button(<span class="string">"Search"</span>, GUILayout.Width(<span class="number">100</span>)))</span><br><span class="line">        &#123;</span><br><span class="line">            result.Clear();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (searchObject == <span class="literal">null</span>)</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">string</span> assetPath = AssetDatabase.GetAssetPath(searchObject);</span><br><span class="line">            <span class="keyword">string</span> assetGuid = AssetDatabase.AssetPathToGUID(assetPath);</span><br><span class="line">            <span class="comment">//只检查prefab</span></span><br><span class="line">            <span class="keyword">string</span>[] guids = AssetDatabase.FindAssets(<span class="string">"t:Prefab"</span>, <span class="keyword">new</span>[] &#123; <span class="string">"Assets/Res/GUI/prefabs"</span> &#125;);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">float</span> length = guids.Length;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">string</span> filePath = AssetDatabase.GUIDToAssetPath(guids[i]);</span><br><span class="line">                <span class="keyword">if</span> (EditorUtility.DisplayCancelableProgressBar(<span class="string">"Checking"</span>, filePath, i / length))</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//检查是否包含guid</span></span><br><span class="line">                <span class="keyword">string</span> content = File.ReadAllText(filePath);</span><br><span class="line">                <span class="keyword">if</span> (content.Contains(assetGuid))</span><br><span class="line">                &#123;</span><br><span class="line">                    Object fileObject = AssetDatabase.LoadAssetAtPath(filePath, <span class="keyword">typeof</span>(Object));</span><br><span class="line">                    result.Add(fileObject);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            EditorUtility.ClearProgressBar();</span><br><span class="line">        &#125;</span><br><span class="line">        EditorGUILayout.EndHorizontal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//显示结果</span></span><br><span class="line">        EditorGUILayout.BeginVertical();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; result.Count; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            EditorGUILayout.ObjectField(result[i], <span class="keyword">typeof</span>(Object), <span class="literal">true</span>, GUILayout.Width(<span class="number">300</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        EditorGUILayout.EndHorizontal();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>策略模式是将加减乘除分别定义成一个单独的类，当我们使用计算器的时候，动态的替换我们当前使用的算法，具体代码如下：</p>
-<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title">Operation</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Operate</span>(<span class="params"><span class="keyword">int</span> num1, <span class="keyword">int</span> num2</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">AddOperation</span>:<span class="title">Operation</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Operate</span>(<span class="params"><span class="keyword">int</span> num1, <span class="keyword">int</span> num2</span>)</span>&#123;<span class="keyword">return</span> num1 + num2;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">SubOperation</span>:<span class="title">Operation</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Operate</span>(<span class="params"><span class="keyword">int</span> num1, <span class="keyword">int</span> num2</span>)</span>&#123;<span class="keyword">return</span> num1 - num2;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Calculator</span></span><br><span class="line">&#123;	</span><br><span class="line">    <span class="keyword">private</span> Operation _curOperation;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SetOperation</span>(<span class="params">Operation o</span>)</span>&#123;_curOperation = o;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">Operate</span>(<span class="params"><span class="keyword">int</span> num1, num2</span>)</span>&#123;<span class="keyword">return</span> _curOperation.Operate(num1, num2)&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用方法</span></span><br><span class="line">Calculator c = <span class="keyword">new</span> Calculator();</span><br><span class="line">c.SetOperation(<span class="keyword">new</span> AddOperation());</span><br><span class="line">c.Operate(<span class="number">2</span>, <span class="number">1</span>);  <span class="comment">// 输出 3</span></span><br><span class="line">c.SetOperation(<span class="keyword">new</span> SubOperation());</span><br><span class="line">c.Operate(<span class="number">2</span>, <span class="number">1</span>);  <span class="comment">// 输出 1</span></span><br></pre></td></tr></table></figure>
-
-<p>策略模式让我们的代码更容易扩展，如果以后需要添加其他的算法，只需要再增加一个新的类，然后实现Operation接口，不需要改动之前的任何代码。</p>
-<h3 id="2-设计模式的优缺点"><a href="#2-设计模式的优缺点" class="headerlink" title="2. 设计模式的优缺点"></a>2. 设计模式的优缺点</h3><p><strong>优点：</strong> </p>
-<p>​    1. 遵守了开放封闭原则。扩展性良好</p>
-<p><strong>缺点：</strong> </p>
-<ol>
-<li><p>策略越多，类也就会越多。</p>
-</li>
-<li><p>所有的算法都应该暴露出去，并且写好文档，让别人知道你已经提供了哪些策略。</p>
-</li>
-</ol>
-<p>​                </p>
 
         </div>
         <footer class="article-footer">
@@ -194,7 +178,7 @@
 
 
 
-    <a data-url="http://yoursite.com/2019/07/16/策略模式/" data-id="ck0ltppoy0001l8l1q1fzztqz" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2019/09/06/Unity中查找静态引用指定图片的预制体/" data-id="ck0ltppp8000cl8l1523afnq5" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -264,18 +248,16 @@
             "@type": "Person",
             "name": "木又"
         },
-        "headline": "策略模式",
+        "headline": "Unity中查找静态引用指定图片的预制体",
         "image": "http://yoursite.com",
         "keywords": "设计模式 策略模式",
-        "genre": "设计模式",
-        "datePublished": "2019-07-16",
-        "dateCreated": "2019-07-16",
-        "dateModified": "2019-07-18",
-        "url": "http://yoursite.com/2019/07/16/策略模式/",
-        "description": "1. 什么是策略模式？策略模式定义了算法族，将它们分别封装起来，让它们可以相互替换。这个模式使算法独立于它的使用者。
-譬如我们我们需要实现一个计算器的功能，这个计算器有加减乘除四种计算方式，一般的做法就是创建一个计算器类，然后在这个类中添加加减乘除四个方法。代码如下：
-1234567public class Calculator&#123;    public int Add(int num1, "
-        "wordCount": 334
+        "genre": "效率工具",
+        "datePublished": "2019-09-06",
+        "dateCreated": "2019-09-06",
+        "dateModified": "2019-09-06",
+        "url": "http://yoursite.com/2019/09/06/Unity中查找静态引用指定图片的预制体/",
+        "description": "123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566using UnityEditor;using UnityEngine;using System.Collections.Generic;using Sy"
+        "wordCount": 824
     }
 </script>
 
@@ -355,16 +337,22 @@
         
 <nav id="article-nav">
     
-        <a href="/2019/09/06/Unity中查找静态引用指定图片的预制体/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2019/09/16/Lua闭包/" id="article-nav-newer" class="article-nav-link-wrap">
         <strong class="article-nav-caption">下一篇</strong>
         <p class="article-nav-title">
         
-            Unity中查找静态引用指定图片的预制体
+            Lua闭包
         
         </p>
         <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
     </a>
     
+    
+        <a href="/2019/07/16/策略模式/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">策略模式</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
     
 </nav>
 
@@ -536,7 +524,7 @@
     var disqus_shortname = 'hexo-theme-hueman';
     
     
-    var disqus_url = 'http://yoursite.com/2019/07/16/策略模式/';
+    var disqus_url = 'http://yoursite.com/2019/09/06/Unity中查找静态引用指定图片的预制体/';
     
     (function() {
     var dsq = document.createElement('script');
