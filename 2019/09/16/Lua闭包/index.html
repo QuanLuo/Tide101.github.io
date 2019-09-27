@@ -12,18 +12,18 @@
     
         <meta name="keywords" content="Lua程序设计">
     
-    <meta name="description" content="前言在解释闭包之前，我们先要介绍下下面几个概念。  第一类值 词法定界 非局部变量">
+    <meta name="description" content="前言在解释闭包之前，我们先要介绍下下面几个概念。  非局部变量（UpValue）  词法定界   1. 非局部变量（UpValue）定义： 不在局部范围内定义的非全局变量。 在下面的那段代码中，变量 a 既不是函数 B( ) 的局部变量，也不是全局变量，我们称 a 是函数 B( ) 的非局部变量（即 UpValue）。 1234567function A() 	local a = &amp;#123;&amp;#">
 <meta name="keywords" content="Lua程序设计">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Lua闭包">
 <meta property="og:url" content="http://yoursite.com/2019/09/16/Lua闭包/index.html">
 <meta property="og:site_name" content="权小爷的QQ空间">
-<meta property="og:description" content="前言在解释闭包之前，我们先要介绍下下面几个概念。  第一类值 词法定界 非局部变量">
+<meta property="og:description" content="前言在解释闭包之前，我们先要介绍下下面几个概念。  非局部变量（UpValue）  词法定界   1. 非局部变量（UpValue）定义： 不在局部范围内定义的非全局变量。 在下面的那段代码中，变量 a 既不是函数 B( ) 的局部变量，也不是全局变量，我们称 a 是函数 B( ) 的非局部变量（即 UpValue）。 1234567function A() 	local a = &amp;#123;&amp;#">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-09-16T03:09:23.705Z">
+<meta property="og:updated_time" content="2019-09-27T09:31:12.726Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lua闭包">
-<meta name="twitter:description" content="前言在解释闭包之前，我们先要介绍下下面几个概念。  第一类值 词法定界 非局部变量">
+<meta name="twitter:description" content="前言在解释闭包之前，我们先要介绍下下面几个概念。  非局部变量（UpValue）  词法定界   1. 非局部变量（UpValue）定义： 不在局部范围内定义的非全局变量。 在下面的那段代码中，变量 a 既不是函数 B( ) 的局部变量，也不是全局变量，我们称 a 是函数 B( ) 的非局部变量（即 UpValue）。 1234567function A() 	local a = &amp;#123;&amp;#">
     
 
     
@@ -171,10 +171,36 @@
         <div class="article-entry" itemprop="articleBody">
             <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在解释闭包之前，我们先要介绍下下面几个概念。</p>
 <ol>
-<li>第一类值</li>
-<li>词法定界</li>
-<li>非局部变量</li>
+<li><p>非局部变量（UpValue）</p>
+</li>
+<li><p>词法定界</p>
+</li>
 </ol>
+<h5 id="1-非局部变量（UpValue）"><a href="#1-非局部变量（UpValue）" class="headerlink" title="1. 非局部变量（UpValue）"></a>1. 非局部变量（UpValue）</h5><p><strong>定义：</strong> 不在局部范围内定义的非全局变量。</p>
+<p>在下面的那段代码中，变量 <strong>a</strong> 既不是函数 <strong>B( )</strong> 的局部变量，也不是全局变量，我们称 <strong>a</strong> 是函数 <strong>B( )</strong> 的<strong>非局部变量</strong>（即 UpValue）。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">A</span><span class="params">()</span></span> </span><br><span class="line">	<span class="keyword">local</span> a = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">B</span><span class="params">()</span></span></span><br><span class="line">    	<span class="keyword">local</span> b = a</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="2-词法定界"><a href="#2-词法定界" class="headerlink" title="2. 词法定界"></a>2. 词法定界</h5><p><strong>定义：</strong> 被嵌套的函数可以访问他外部函数中的变量。</p>
+<p>如上面那段代码所示，正是因为词法定界的存在，我们才可以在函数 <strong>B( )</strong> 中，访问到函数 <strong>A( )</strong> 中的局部变量 <strong>a</strong>。</p>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><p><strong>定义：</strong> 一个闭包就是由该函数和与其相关的引用环境所组成的实体。闭包 = 函数 + 引用环境。</p>
+<p>在上面的代码中，函数 <strong>A( )</strong> 就是一个闭包，函数 <strong>B( )</strong> 和其引用的 <strong>变量a</strong> 也是一个闭包。</p>
+<p>我们再来看下下面这段代码</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">newCounter</span><span class="params">()</span></span></span><br><span class="line">	<span class="keyword">local</span> count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line">    	count = count + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> count</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>在上述这段代码中，函数 <strong>newCounter( )</strong> 返回了一个匿名函数，该匿名函数又调用了 <strong>非局部变量count</strong>， 当我们调用这个函数之后，会返回一个闭包，这个闭包由该<strong>匿名函数</strong>和 <strong>非局部变量count</strong> 组成，每调用一次返回的匿名函数，count 的值都会加 1。效果如下所示</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> c1 = newCounter()</span><br><span class="line">c1()    <span class="comment">--&gt; 1</span></span><br><span class="line">c1()    <span class="comment">--&gt; 2</span></span><br></pre></td></tr></table></figure>
+
+<p>这个时候，如果我们再次调用方法 <strong>newCounter( )</strong>， 就会创建一个新的闭包。效果如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> c2 = newCounter()</span><br><span class="line">c2()    <span class="comment">--&gt; 1</span></span><br><span class="line">c1()    <span class="comment">--&gt; 3</span></span><br><span class="line">c2()    <span class="comment">--&gt; 2</span></span><br><span class="line">c2()    <span class="comment">--&gt; 3</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>总结：</strong> </p>
+<ol>
+<li>闭包 = 函数 + 引用环境。</li>
+<li>每一个闭包都是一个独立的互不干扰的个体。</li>
+<li>从技术上讲，lua 语言只有闭包没有函数，函数本身只是闭包的一种原型。</li>
+</ol>
+</blockquote>
 
         </div>
         <footer class="article-footer">
@@ -182,7 +208,7 @@
 
 
 
-    <a data-url="http://yoursite.com/2019/09/16/Lua闭包/" data-id="ck0lurs1o0000lgl11l1agn46" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+    <a data-url="http://yoursite.com/2019/09/16/Lua闭包/" data-id="ck11xgj3z0005i8l1nc9xop11" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
 <script>
     (function ($) {
         $('body').on('click', function() {
@@ -258,16 +284,19 @@
         "genre": "Lua程序设计",
         "datePublished": "2019-09-16",
         "dateCreated": "2019-09-16",
-        "dateModified": "2019-09-16",
+        "dateModified": "2019-09-27",
         "url": "http://yoursite.com/2019/09/16/Lua闭包/",
         "description": "前言在解释闭包之前，我们先要介绍下下面几个概念。
 
-第一类值
-词法定界
-非局部变量
+非局部变量（UpValue）
 
-"
-        "wordCount": 5
+词法定界
+
+
+1. 非局部变量（UpValue）定义： 不在局部范围内定义的非全局变量。
+在下面的那段代码中，变量 a 既不是函数 B( ) 的局部变量，也不是全局变量，我们称 a 是函数 B( ) 的非局部变量（即 UpValue）。
+1234567function A() 	local a = &#123;&#"
+        "wordCount": 257
     }
 </script>
 
