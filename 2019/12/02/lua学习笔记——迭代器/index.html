@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <meta charset="utf-8">
+
+    
+
+    
+    <title>Lua学习笔记——迭代器 | 权小爷的QQ空间</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="Lua程序设计">
+    
+    <meta name="description" content="[TOC] 定义 是一种可以让我们遍历一个集合的所有元素的代码结构。 在 lua 语言中，通常使用函数表示迭代器。每一次调用，函数就会返回集合中的下一个元素， 在没有可读取的时候返回 nil。 需要在每一次调用之后保存一些状态，这样才能在再次调用的时候返回下一个元素。 闭包为迭代器保存状态提供了一种良好的机制。 一个迭代器一般涉及两个函数：迭代器本身（闭包）和一个用于创建该迭代器的工厂。  简单">
+<meta name="keywords" content="Lua程序设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua学习笔记——迭代器">
+<meta property="og:url" content="http://yoursite.com/2019/12/02/lua学习笔记——迭代器/index.html">
+<meta property="og:site_name" content="权小爷的QQ空间">
+<meta property="og:description" content="[TOC] 定义 是一种可以让我们遍历一个集合的所有元素的代码结构。 在 lua 语言中，通常使用函数表示迭代器。每一次调用，函数就会返回集合中的下一个元素， 在没有可读取的时候返回 nil。 需要在每一次调用之后保存一些状态，这样才能在再次调用的时候返回下一个元素。 闭包为迭代器保存状态提供了一种良好的机制。 一个迭代器一般涉及两个函数：迭代器本身（闭包）和一个用于创建该迭代器的工厂。  简单">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/quanxiaoye/ImgHosting/root/lua_iter.webp">
+<meta property="og:updated_time" content="2019-12-05T09:08:36.762Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lua学习笔记——迭代器">
+<meta name="twitter:description" content="[TOC] 定义 是一种可以让我们遍历一个集合的所有元素的代码结构。 在 lua 语言中，通常使用函数表示迭代器。每一次调用，函数就会返回集合中的下一个元素， 在没有可读取的时候返回 nil。 需要在每一次调用之后保存一些状态，这样才能在再次调用的时候返回下一个元素。 闭包为迭代器保存状态提供了一种良好的机制。 一个迭代器一般涉及两个函数：迭代器本身（闭包）和一个用于创建该迭代器的工厂。  简单">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/quanxiaoye/ImgHosting/root/lua_iter.webp">
+    
+
+    
+        <link rel="alternate" href="/" title="权小爷的QQ空间" type="application/atom+xml">
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+
+
+</head>
+</html>
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item">
+                                    <a class="main-nav-list-link" href="/">主页</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item">
+                                    <a class="main-nav-list-link" href="/archives">归档</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索">
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么...">
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Lua程序设计/">Lua程序设计</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-lua学习笔记——迭代器" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Lua学习笔记——迭代器
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+        <a href="/2019/12/02/lua学习笔记——迭代器/" class="article-date">
+            <time datetime="2019-12-02T08:05:00.000Z" itemprop="datePublished">2019-12-02</time>
+        </a>
+    </div>
+
+		
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Lua程序设计/">Lua程序设计</a>
+    </div>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p><img src="https://cdn.jsdelivr.net/gh/quanxiaoye/ImgHosting/root/lua_iter.webp" alt></p>
+<p>[TOC]</p>
+<h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ol>
+<li>是一种可以让我们遍历一个集合的所有元素的<strong>代码结构</strong>。</li>
+<li>在 lua 语言中，通常使用函数表示迭代器。每一次调用，函数就会返回集合中的下一个元素， 在没有可读取的时候返回 nil。</li>
+<li>需要在每一次调用之后保存一些状态，这样才能在再次调用的时候返回下一个元素。</li>
+<li><strong>闭包</strong>为迭代器保存状态提供了一种良好的机制。</li>
+<li>一个迭代器一般涉及两个函数：迭代器本身（闭包）和一个用于创建该迭代器的工厂。</li>
+</ol>
+<h3 id="简单的例子"><a href="#简单的例子" class="headerlink" title="简单的例子"></a>简单的例子</h3><p>下面是一个顺序打印数组中所有数据的例子。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 迭代器工厂</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">values</span><span class="params">(t)</span></span></span><br><span class="line">	<span class="keyword">local</span> i = <span class="number">0</span></span><br><span class="line">    <span class="comment">-- 返回一个迭代器</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line">        i = i + <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> t[i]</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 测试数据</span></span><br><span class="line"><span class="keyword">local</span> t = &#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 创建一个该测试数据的迭代器(闭包)</span></span><br><span class="line"><span class="keyword">local</span> iter = values(t)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 在while循环中使用这个迭代器</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">true</span> <span class="keyword">do</span></span><br><span class="line">    <span class="comment">-- 调用迭代器，返回下一个数据</span></span><br><span class="line">    <span class="keyword">local</span> element = iter()</span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 当值为空时，表遍历结束，跳出循环</span></span><br><span class="line">    <span class="keyword">if</span> element == <span class="literal">nil</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">		<span class="built_in">print</span>(element)        </span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="泛型-for"><a href="#泛型-for" class="headerlink" title="泛型 for"></a>泛型 for</h3><p>我们除了上面这种调用迭代器的方式之外，还可以使用泛型 for。代码如下所示：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 测试数据</span></span><br><span class="line"><span class="keyword">local</span> t = &#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> values(t) <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">print</span>(element)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>泛型 for 在自己内部保存迭代函数，实际上它保存三个值：<strong>迭代函数、状态常量、控制变量</strong>。</p>
+<p><strong>泛型for的基本格式如下：</strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &lt;var-list&gt; <span class="keyword">in</span> &lt;<span class="built_in">exp</span>-list&gt; <span class="keyword">do</span></span><br><span class="line">     &lt;body&gt;</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>泛型 for 的执行过程如下：</strong></p>
+<ol>
+<li><strong>初始化</strong>。对 <strong>in</strong> 后面的表达式求值，表达式应依次返回泛型 for 需要的三个值： <strong>迭代函数、状态常量、控制变量</strong>。 如果返回值个数不足，则用 nil 补齐。</li>
+<li><strong>调用迭代函数</strong>。将状态常量和控制变量作为参数调用迭代函数（注意：对于 for 结构来说，状态常量没有用处，仅仅在初始化时获取他的值并传递给迭代函数）</li>
+<li><strong>返回迭代结果</strong>。将迭代函数返回的值赋给变量列表。</li>
+<li><strong>执行循环体</strong>。 如果返回的第一个值为nil循环结束，否则执行循环体。</li>
+<li><strong>迭代</strong>。重新调用第二步。</li>
+</ol>
+<blockquote>
+<p><strong>注意：</strong></p>
+<ol>
+<li><var-list>：是由一个或多个变量名组成，由逗号隔开。（其实就是迭代函数的返回值）</var-list></li>
+<li><exp-list>：也是由一个或多个变量名组成，由逗号隔开。但是只会保留三个，多余的舍弃，不足的nil补足。</exp-list></li>
+</ol>
+</blockquote>
+<h3 id="多状态迭代器"><a href="#多状态迭代器" class="headerlink" title="多状态迭代器"></a>多状态迭代器</h3><p>很多情况下，迭代器需要保存多个状态信息而不是简单的状态常量和控制变量，最简单的方法是使用闭包，还有一种方法就是将所有的状态信息封装到 table 内，将 table 作为迭代器的状态常量，因为这种情况下可以将所有的信息存放在 table 内，所以迭代函数通常不需要第二个参数。</p>
+<p>以下实例我们使用<strong>闭包</strong>创建了自己的多状态迭代器：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 测试数据</span></span><br><span class="line">array = &#123;<span class="string">"Google"</span>, <span class="string">"Runoob"</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">elementIterator</span> <span class="params">(collection)</span></span></span><br><span class="line">   <span class="keyword">local</span> index = <span class="number">0</span></span><br><span class="line">   <span class="keyword">local</span> count = #collection</span><br><span class="line">   <span class="comment">-- 闭包函数</span></span><br><span class="line">   <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">()</span></span></span><br><span class="line">      index = index + <span class="number">1</span></span><br><span class="line">      <span class="keyword">if</span> index &lt;= count</span><br><span class="line">      <span class="keyword">then</span></span><br><span class="line">         <span class="comment">--  返回迭代器的当前元素</span></span><br><span class="line">         <span class="keyword">return</span> collection[index]</span><br><span class="line">      <span class="keyword">end</span></span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> elementIterator(array)</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">   <span class="built_in">print</span>(element)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="无状态迭代器"><a href="#无状态迭代器" class="headerlink" title="无状态迭代器"></a>无状态迭代器</h3><p>多状态迭代器，都有一个缺点，即每个新的循环，都要创建一个新的闭包，对于大多数情况来说，这或许不会有什么问题，但是在另一些情况下，这样的开销可能会很可观。这个时候，我们就可以使用无状态迭代器。</p>
+<p>无状态的迭代器是指不保留任何状态的迭代器，因此在循环中我们可以利用无状态迭代器避免创建闭包花费额外的代价。</p>
+<p>每一次迭代，迭代函数都是用两个变量（状态常量和控制变量）的值作为参数被调用，一个无状态的迭代器只利用这两个值可以获取下一个元素。</p>
+<p>这种无状态迭代器的典型的简单的例子是 ipairs，它遍历数组的每一个元素。</p>
+<p>以下实例我们使用了一个简单的函数来实现迭代器，实现 数字 n 的平方：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 无状态迭代器</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">square</span><span class="params">(iteratorMaxCount,currentNumber)</span></span></span><br><span class="line">   <span class="keyword">if</span> currentNumber&lt;iteratorMaxCount <span class="keyword">then</span></span><br><span class="line">   		currentNumber = currentNumber+<span class="number">1</span></span><br><span class="line">   		<span class="keyword">return</span> currentNumber, currentNumber*currentNumber</span><br><span class="line">   <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i,n <span class="keyword">in</span> square,<span class="number">3</span>,<span class="number">0</span> <span class="keyword">do</span></span><br><span class="line">   <span class="built_in">print</span>(i,n)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="按顺序遍历表的实现方案"><a href="#按顺序遍历表的实现方案" class="headerlink" title="按顺序遍历表的实现方案"></a>按顺序遍历表的实现方案</h3><p><strong>pairs 和 ipairs 的区别：</strong></p>
+<ol>
+<li>pairs 遍历表，ipairs 只能遍历数组。</li>
+<li>pairs 遍历是无序的，ipairs 是有序遍历且只能按照索引升序遍历。</li>
+</ol>
+<p><strong>接下来是按顺序遍历表的具体解决方案：</strong></p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">pairsByKeys</span><span class="params">(t, f)</span></span></span><br><span class="line">    <span class="comment">-- 以表的key值创建一个数组</span></span><br><span class="line">    <span class="keyword">local</span> a = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> <span class="built_in">pairs</span>(t) <span class="keyword">do</span></span><br><span class="line">    	a[#a+<span class="number">1</span>] = key    </span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">-- 对key进行排序</span></span><br><span class="line">    <span class="built_in">table</span>.<span class="built_in">sort</span>(a, f)</span><br><span class="line">    <span class="keyword">local</span> i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line">    	i = i + <span class="number">1</span></span><br><span class="line">        <span class="comment">-- 按照 a 的顺序输出原始表的键值对</span></span><br><span class="line">        <span class="keyword">return</span> a[i], a[i] <span class="keyword">and</span> t[a[i]]</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><ol>
+<li><p><strong>编写一个迭代器 fromto，使得该循环与数值型 for 等价。</strong></p>
+<p>多状态迭代器实现方法：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fromto</span><span class="params">(t, n)</span></span></span><br><span class="line">    <span class="keyword">local</span> i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line">        i = i + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> i &lt;= n <span class="keyword">then</span></span><br><span class="line">	    	<span class="keyword">return</span> t[i]</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用方法</span></span><br><span class="line"><span class="keyword">local</span> t = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> fromto(t, <span class="number">3</span>) <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">print</span>(element)    </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>无状态迭代器实现方法：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 迭代函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fromtoIter</span><span class="params">(t, i)</span></span></span><br><span class="line">    i = i + <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> i &lt;= t.endIndex <span class="keyword">then</span></span><br><span class="line">    	<span class="keyword">return</span> t.<span class="built_in">table</span>[i]</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 工厂</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fromto</span><span class="params">(t, n)</span></span></span><br><span class="line">    <span class="keyword">local</span> temp = &#123;&#125;</span><br><span class="line">    temp.<span class="built_in">table</span> = t</span><br><span class="line">    temp.endIndex = n</span><br><span class="line">	<span class="keyword">return</span> fromtoIter, temp, <span class="number">0</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用方法</span></span><br><span class="line"><span class="keyword">local</span> t = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> fromto(t, <span class="number">3</span>) <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">print</span>(element)    </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>增加步进参数的多状态实现方案：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fromto</span><span class="params">(t, n, step)</span></span></span><br><span class="line">    <span class="keyword">local</span> i = <span class="number">1</span> - step</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line">        i = i + step</span><br><span class="line">    	<span class="keyword">if</span> i &lt;= n <span class="keyword">then</span></span><br><span class="line">	    	<span class="keyword">return</span> t[i]</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用方法</span></span><br><span class="line"><span class="keyword">local</span> t = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> fromto(t, <span class="number">3</span>, <span class="number">2</span>) <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">print</span>(element)    </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+<p>增加步进参数的无状态实现方案：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 迭代函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fromtoIter</span><span class="params">(t, i)</span></span></span><br><span class="line">    i = i + t.step</span><br><span class="line">    <span class="keyword">if</span> i &lt;= t.endIndex <span class="keyword">then</span></span><br><span class="line">    	<span class="keyword">return</span> t.<span class="built_in">table</span>[i]</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 工厂</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fromto</span><span class="params">(t, n, step)</span></span></span><br><span class="line">    <span class="keyword">local</span> temp = &#123;&#125;</span><br><span class="line">    temp.<span class="built_in">table</span> = t</span><br><span class="line">    temp.endIndex = n</span><br><span class="line">    temp.step = step <span class="keyword">or</span> <span class="number">1</span></span><br><span class="line">	<span class="keyword">return</span> fromtoIter, temp, <span class="number">1</span> - temp.step</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 使用方法</span></span><br><span class="line"><span class="keyword">local</span> t = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line"><span class="keyword">for</span> element <span class="keyword">in</span> fromto(t, <span class="number">3</span>, <span class="number">2</span>) <span class="keyword">do</span></span><br><span class="line">	<span class="built_in">print</span>(element)    </span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+
+    <a data-url="http://yoursite.com/2019/12/02/lua学习笔记——迭代器/" data-id="ck3si0v7000008ol1ffatgy68" class="article-share-link"><i class="fa fa-share"></i>分享到</a>
+<script>
+    (function ($) {
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "木又"
+        },
+        "headline": "Lua学习笔记——迭代器",
+        "image": "http://yoursite.comhttps://cdn.jsdelivr.net/gh/quanxiaoye/ImgHosting/root/lua_iter.webp",
+        "keywords": "Lua程序设计",
+        "genre": "Lua程序设计",
+        "datePublished": "2019-12-02",
+        "dateCreated": "2019-12-02",
+        "dateModified": "2019-12-05",
+        "url": "http://yoursite.com/2019/12/02/lua学习笔记——迭代器/",
+        "description": "
+[TOC]
+定义
+是一种可以让我们遍历一个集合的所有元素的代码结构。
+在 lua 语言中，通常使用函数表示迭代器。每一次调用，函数就会返回集合中的下一个元素， 在没有可读取的时候返回 nil。
+需要在每一次调用之后保存一些状态，这样才能在再次调用的时候返回下一个元素。
+闭包为迭代器保存状态提供了一种良好的机制。
+一个迭代器一般涉及两个函数：迭代器本身（闭包）和一个用于创建该迭代器的工厂。
+
+简单"
+        "wordCount": 1388
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>关注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="twitter" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-twitter"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="google-plus" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-google-plus"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/ppoffice/hexo-theme-hueman" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="weibo" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-weibo"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="rss" href="/" target="_blank" rel="noopener">
+                        <i class="icon fa fa-rss"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/2019/10/08/Lua学习笔记——日期和时间/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">Lua学习笔记——时间和日期</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/12/02/lua学习笔记——迭代器/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://cdn.jsdelivr.net/gh/quanxiaoye/ImgHosting/root/lua_iter.webp)" alt="Lua学习笔记——迭代器" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Lua程序设计/">Lua程序设计</a></p>
+                            <p class="item-title"><a href="/2019/12/02/lua学习笔记——迭代器/" class="title">Lua学习笔记——迭代器</a></p>
+                            <p class="item-date"><time datetime="2019-12-02T08:05:00.000Z" itemprop="datePublished">2019-12-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/10/08/Lua学习笔记——日期和时间/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://cdn.jsdelivr.net/gh/quanxiaoye/ImgHosting/root/%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.jpg)" alt="Lua学习笔记——时间和日期" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Lua程序设计/">Lua程序设计</a></p>
+                            <p class="item-title"><a href="/2019/10/08/Lua学习笔记——日期和时间/" class="title">Lua学习笔记——时间和日期</a></p>
+                            <p class="item-date"><time datetime="2019-10-08T11:22:00.000Z" itemprop="datePublished">2019-10-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/09/16/Unity中查找静态引用指定图片的预制体/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/效率工具/">效率工具</a></p>
+                            <p class="item-title"><a href="/2019/09/16/Unity中查找静态引用指定图片的预制体/" class="title">Unity中查找静态引用指定图片的预制体</a></p>
+                            <p class="item-date"><time datetime="2019-09-16T03:07:42.000Z" itemprop="datePublished">2019-09-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/09/16/Lua学习笔记——闭包/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Lua程序设计/">Lua程序设计</a></p>
+                            <p class="item-title"><a href="/2019/09/16/Lua学习笔记——闭包/" class="title">Lua学习笔记——闭包</a></p>
+                            <p class="item-date"><time datetime="2019-09-16T02:57:25.000Z" itemprop="datePublished">2019-09-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2019/07/16/策略模式/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/设计模式/">设计模式</a></p>
+                            <p class="item-title"><a href="/2019/07/16/策略模式/" class="title">策略模式</a></p>
+                            <p class="item-date"><time datetime="2019-07-16T03:10:53.000Z" itemprop="datePublished">2019-07-16</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">分类</h3>
+        <div class="widget">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Lua程序设计/">Lua程序设计</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/效率工具/">效率工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/">设计模式</a><span class="category-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">归档</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">十二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">七月 2019</a><span class="archive-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Lua程序设计/">Lua程序设计</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/效率工具/">效率工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/策略模式/">策略模式</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">标签云</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Lua程序设计/" style="font-size: 20px;">Lua程序设计</a> <a href="/tags/效率工具/" style="font-size: 10px;">效率工具</a> <a href="/tags/策略模式/" style="font-size: 10px;">策略模式</a> <a href="/tags/设计模式/" style="font-size: 10px;">设计模式</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">链接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2019 木又</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+    
+    <script>
+    var disqus_shortname = 'hexo-theme-hueman';
+    
+    
+    var disqus_url = 'http://yoursite.com/2019/12/02/lua学习笔记——迭代器/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
